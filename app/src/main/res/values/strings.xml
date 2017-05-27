@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Yan</string>
+    <string name="action_logout"> Log Out</string>
+    <string name="loading">Loading</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="log_in">Log in</string>
 </resources>

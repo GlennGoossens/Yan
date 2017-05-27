@@ -1,0 +1,58 @@
+{
+  "project_info": {
+    "project_number": "817613956545",
+    "firebase_url": "https://yanapp-a03c1.firebaseio.com",
+    "project_id": "yanapp-a03c1",
+    "storage_bucket": "yanapp-a03c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817613956545:android:4b01e8859d64b58f",
+        "android_client_info": {
+          "package_name": "com.glenngoossens.yan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "817613956545-anj34uj6p5beim0u28gjr68c351ak24v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.glenngoossens.yan",
+            "certificate_hash": "0dfa44185340c004a0cb456b2014c8251ebb0f61"
+          }
+        },
+        {
+          "client_id": "817613956545-9s3bbqqo19p4o607kcf4f17g6bjj94i6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC39x2PiJka-oCnQCx1rfZRbhdgEb9I6hU"
+        },
+        {
+          "current_key": "AIzaSyABLp1PS2XW7b0z_2-f7OsL7O8ogbv2CdY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "817613956545-9s3bbqqo19p4o607kcf4f17g6bjj94i6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
