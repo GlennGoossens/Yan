@@ -6,4 +6,8 @@
     <string name="email">email</string>
     <string name="password">password</string>
     <string name="log_in">Log in</string>
+    <string name="unknown_device">Unknow device</string>
+    <string name="title_devices">Yan devices</string>
+    <string name="menu_scan">SCAN</string>
+    <string name="menu_stop">STOP</string>
 </resources>
