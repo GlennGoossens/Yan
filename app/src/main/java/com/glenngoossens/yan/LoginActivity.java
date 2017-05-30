@@ -94,13 +94,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                   if(email.equals(dataSnapshot1.getValue().toString())){
-                       Toast.makeText(getApplicationContext(), "Email already exists", Toast.LENGTH_SHORT).show();
-                       signUpActive = false;
-                       changeSignUpModeTextView.setText("Sign Up");
-                       signUpButton.setText("Log In");
-                       return;
-                   }
+                    if (email.equals(dataSnapshot1.getValue().toString())) {
+                        Toast.makeText(getApplicationContext(), "Email already exists", Toast.LENGTH_SHORT).show();
+                        signUpActive = false;
+                        changeSignUpModeTextView.setText("Sign Up");
+                        signUpButton.setText("Log In");
+                        return;
+                    }
                 }
                 Log.i(TAG, "onDataChange: " + emails.toString());
             }
@@ -112,23 +112,23 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         });
 
 
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            Log.d(TAG, "onComplete: create " + task.isSuccessful());
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "onComplete: create " + task.isSuccessful());
 
-                            if (!task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, "creation failed", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(LoginActivity.this, "creation of user is successful", Toast.LENGTH_SHORT).show();
-                                FirebaseUser userFirebase = mAuth.getCurrentUser();
-                                myRef.child("users").push().setValue(email);
-                                Log.i(TAG, "CurrentUser creation: " + userFirebase.getEmail());
-                            }
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, "creation failed", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "creation of user is successful", Toast.LENGTH_SHORT).show();
+                            FirebaseUser userFirebase = mAuth.getCurrentUser();
+                            myRef.child("users").push().setValue(email);
+                            Log.i(TAG, "CurrentUser creation: " + userFirebase.getEmail());
                         }
-                    });
-        }
+                    }
+                });
+    }
 
 
     public void signIn(String email, String password) {
