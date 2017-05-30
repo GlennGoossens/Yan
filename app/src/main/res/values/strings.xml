@@ -10,4 +10,9 @@
     <string name="title_devices">Yan devices</string>
     <string name="menu_scan">SCAN</string>
     <string name="menu_stop">STOP</string>
+    <string name="found_devices">FOUND DEVICES</string>
+    <string name="devicename">deviceName</string>
+    <string name="deviceaddress">deviceAddress</string>
+    <string name="button">Open</string>
+    <string name="buttonClose">CLOSE</string>
 </resources>
