@@ -43,7 +43,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="23dp"
-        android:onClick="signUpOrLogin"
         android:text="@string/sign_up"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
