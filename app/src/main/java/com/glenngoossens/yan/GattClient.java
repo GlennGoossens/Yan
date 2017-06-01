@@ -29,7 +29,7 @@ public class GattClient {
 
     private static final String TAG = GattClient.class.getSimpleName();
 
-    public interface OnReadListener{
+    public interface OnReadListener {
         void onConnected(boolean success);
     }
 
@@ -38,7 +38,7 @@ public class GattClient {
     private String deviceAddress;
 
     private static final UUID SERVICE_UUID = UUID.fromString("795090c7-420d-4048-a24e-18e60180e23c");
-    public static UUID CHARACTERISTIC_INTERACTOR_UUID = UUID.fromString("0b89d2d4-0ea6-4141-86bb-0c5fb91ab14a");
+    private static UUID CHARACTERISTIC_INTERACTOR_UUID = UUID.fromString("0b89d2d4-0ea6-4141-86bb-0c5fb91ab14a");
 
     private BluetoothManager manager;
     private BluetoothAdapter adapter;
@@ -46,9 +46,9 @@ public class GattClient {
     private BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-            if(newState == BluetoothProfile.STATE_CONNECTED){
+            if (newState == BluetoothProfile.STATE_CONNECTED) {
                 gatt.discoverServices();
-            }else if(newState == BluetoothProfile.STATE_DISCONNECTED){
+            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 listener.onConnected(false);
             }
         }
@@ -60,7 +60,7 @@ public class GattClient {
 
                 BluetoothGattService service = gatt.getService(SERVICE_UUID);
                 if (service != null) {
-                    if((service.getCharacteristic(CHARACTERISTIC_INTERACTOR_UUID) != null)){
+                    if ((service.getCharacteristic(CHARACTERISTIC_INTERACTOR_UUID) != null)) {
                         connected = true;
                     }
                 }
@@ -69,8 +69,6 @@ public class GattClient {
                 Log.w(TAG, "onServicesDiscovered received: " + status);
             }
         }
-
-        
     };
     private final BroadcastReceiver mBluetoothReceiver = new BroadcastReceiver() {
         @Override
@@ -85,7 +83,6 @@ public class GattClient {
                     stopClient();
                     break;
                 default:
-                    // Do nothing
                     break;
             }
         }
@@ -102,7 +99,6 @@ public class GattClient {
             throw new RuntimeException("GATT client requires Bluetooth support");
         }
 
-        // Register for system Bluetooth events
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         this.context.registerReceiver(mBluetoothReceiver, filter);
         if (!adapter.isEnabled()) {
@@ -160,7 +156,6 @@ public class GattClient {
         if (bluetoothGatt != null) {
             bluetoothGatt.disconnect();
             bluetoothGatt.close();
-            //bluetoothGatt = null;
         }
 
         if (adapter != null) {

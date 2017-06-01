@@ -17,7 +17,6 @@ import java.util.Date;
 
 public class DeviceControlActivity extends AppCompatActivity {
 
-    private final static String TAG = DeviceControlActivity.class.getSimpleName();
     private TextView deviceName,deviceAddress;
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
@@ -25,7 +24,6 @@ public class DeviceControlActivity extends AppCompatActivity {
     private Button buttonClose, buttonOpen;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference reference = database.getReference("database");
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +64,6 @@ public class DeviceControlActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         deviceName = (TextView) findViewById(R.id.controlDeviceName);
         deviceAddress = (TextView) findViewById(R.id.controlDeviceAddress);
 
@@ -84,7 +79,6 @@ public class DeviceControlActivity extends AppCompatActivity {
         reference.child("logs").push().setValue(log);
         buttonOpen.setEnabled(false);
         buttonClose.setEnabled(true);
-
     }
 
     private void closeButton() {
@@ -96,7 +90,6 @@ public class DeviceControlActivity extends AppCompatActivity {
         gattClient.onDestroy();
         Intent intent = new Intent(getApplicationContext(),DeviceScanActivity.class);
         startActivity(intent);
-
     }
 
     private void write(String valueString){

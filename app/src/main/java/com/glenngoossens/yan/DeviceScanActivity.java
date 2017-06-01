@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelUuid;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -24,9 +25,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +48,13 @@ public class DeviceScanActivity extends AppCompatActivity {
     private static final String TAG = DeviceScanActivity.class.getSimpleName();
     private boolean scanning;
     private ListView listView;
+    private Button buttonLogOut;
     private ArrayList<String> deviceList = new ArrayList<>();
     private ArrayList<BluetoothDevice> devices = new ArrayList<>();
     private ArrayAdapter<String> adapter;
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     private static final int REQUEST_ENABLE_BT = 1;
     private static final long SCAN_PERIOD = 10_000;
@@ -58,7 +67,7 @@ public class DeviceScanActivity extends AppCompatActivity {
     private final Runnable stopScanRunnable = new Runnable() {
         @Override
         public void run() {
-            if(deviceList.isEmpty()) {
+            if (deviceList.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "No devices found", Toast.LENGTH_SHORT).show();
             }
             stopLeScan();
@@ -94,11 +103,11 @@ public class DeviceScanActivity extends AppCompatActivity {
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_scan);
+
         listView = (ListView) findViewById(R.id.list);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, deviceList);
         adapter.notifyDataSetChanged();
@@ -109,6 +118,32 @@ public class DeviceScanActivity extends AppCompatActivity {
                 final BluetoothDevice device = devices.get(position);
                 if (device == null) return;
                 startInteractActivity(device);
+            }
+        });
+
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                    startActivity(intent);
+                }
+                // ...
+            }
+        };
+        buttonLogOut = (Button) findViewById(R.id.buttonLogOut);
+        buttonLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Logging out",Toast.LENGTH_SHORT).show();
+            mAuth.signOut();
             }
         });
 
@@ -231,27 +266,17 @@ public class DeviceScanActivity extends AppCompatActivity {
         finish();
     }
 
-    private static class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
-
-        public DeviceListAdapter(Context context) {
-            super(context, 0);
-        }
-
-
-        @Override
-        public View getView(int position, View view, ViewGroup parent) {
-            if (view == null) {
-                view = LayoutInflater.from(getContext())
-                        .inflate(R.layout.listitem_device, parent, false);
-            }
-            BluetoothDevice device = getItem(position);
-            TextView name = (TextView) view.findViewById(R.id.device_name);
-            TextView address = (TextView) view.findViewById(R.id.device_address);
-            name.setText(device.getName());
-            address.setText(device.getAddress());
-            return view;
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mAuthListener != null){
+            mAuth.removeAuthStateListener(mAuthListener);
         }
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
 }

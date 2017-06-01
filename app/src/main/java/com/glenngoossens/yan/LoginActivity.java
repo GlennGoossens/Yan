@@ -1,6 +1,7 @@
 package com.glenngoossens.yan;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -70,6 +71,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     Log.d(TAG, "onAuthStateChanged: signed in");
+                    Toast.makeText(getApplicationContext(),"USER IS ALREADY signed in : " + mAuth.getCurrentUser().getEmail(),Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(),DeviceScanActivity.class);
+                    startActivity(intent);
                 } else {
                     Log.d(TAG, "onAuthStateChanged: signed out");
                 }
@@ -86,7 +90,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onStop() {
         super.onStop();
-        mAuth.addAuthStateListener(mAuthListener);
+        if(mAuthListener !=null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 
     public void createAccount(final String email, String password) {
@@ -95,6 +101,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     if (email.equals(dataSnapshot1.getValue().toString())) {
+                        //TODO change in informative texview
                         Toast.makeText(getApplicationContext(), "Email already exists", Toast.LENGTH_SHORT).show();
                         signUpActive = false;
                         changeSignUpModeTextView.setText("Sign Up");
@@ -107,6 +114,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                //TODO change in informative texview
                 Toast.makeText(getApplicationContext(), "Failed to read data", Toast.LENGTH_SHORT).show();
             }
         });
@@ -119,8 +127,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                         Log.d(TAG, "onComplete: create " + task.isSuccessful());
 
                         if (!task.isSuccessful()) {
+                            //TODO change in informative texview
                             Toast.makeText(LoginActivity.this, "creation failed", Toast.LENGTH_SHORT).show();
                         } else {
+                            //TODO change in informative texview
                             Toast.makeText(LoginActivity.this, "creation of user is successful", Toast.LENGTH_SHORT).show();
                             FirebaseUser userFirebase = mAuth.getCurrentUser();
                             myRef.child("users").push().setValue(email);
@@ -138,9 +148,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "onComplete: login " + task.isSuccessful());
                         if (!task.isSuccessful()) {
+                            //TODO change in informative texview
                             Toast.makeText(LoginActivity.this, "login failed", Toast.LENGTH_SHORT).show();
                         } else {
+                            //TODO change in informative texview
                             Toast.makeText(LoginActivity.this, "user is logged in", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(),DeviceScanActivity.class);
+                            startActivity(intent);
                         }
                     }
                 });
@@ -152,14 +166,17 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         String email = String.valueOf(emailField.getText());
         String pass = String.valueOf(passwordField.getText());
         if (email.equals("") || pass.equals("")) {
+            //TODO change in informative texview
             Toast.makeText(LoginActivity.this, "Please fill in the fields", Toast.LENGTH_SHORT).show();
         } else {
             Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
             Matcher m = p.matcher(email);
             boolean matchFound = m.matches();
             if (!matchFound) {
+                //TODO change in informative texview
                 Toast.makeText(LoginActivity.this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
                 if (pass.length() < 6) {
+                    //TODO change in informative texview
                     Toast.makeText(LoginActivity.this, "Password must have more than 6 digits", Toast.LENGTH_SHORT).show();
                 }
             } else {
