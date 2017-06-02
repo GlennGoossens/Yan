@@ -16,4 +16,5 @@
     <string name="button">Open</string>
     <string name="buttonClose">CLOSE</string>
     <string name="log_out">LOG OUT</string>
+    <string name="textview" />
 </resources>
